@@ -71,9 +71,98 @@ Updates are user-triggered. Changes published to GitHub do not automatically cha
 
 Use `/skill-creator` for all skill creation, edits, and evaluation work, as required by [the contributor instructions](AGENTS.md).
 
-- Keep installable skills in `skills/<domain>/<skill-name>/SKILL.md`, with a matching frontmatter `name`.
-- Use [the authoring template](templates/skill/SKILL.md.template) as a starting point through skill-creator. It is outside the installable catalog and deliberately has a different filename.
-- Store manual trigger and behavior cases in each skill's `evals/cases.md`. Run them in fresh agent sessions; these cases are not automated tests.
-- Preview local discovery with `npx skills add . --list`; use `npx skills add .` to install your working copy for local testing.
+### 1. Choose the purpose, domain, and name
 
-No custom npm package or server is required to distribute this collection. Publishing skill content to this GitHub repository makes it available to the installer.
+Define what the skill should produce, when it should activate, and which similar requests it should leave alone. Pick a domain such as `data`, `finance`, or `learning`, or add one when needed.
+
+For example, a skill that turns meeting notes into decisions and action items could live in `skills/writing/meeting-summary/`. The following steps use this example; substitute your own domain and skill name.
+
+### 2. Create it through skill-creator
+
+Open this repository in an agent with skill-creator available. Invoke it using the agent's supported syntax, for example `/skill-creator`, and provide a request like:
+
+```text
+Use skill-creator to create an agent-neutral skill named meeting-summary
+in skills/writing/meeting-summary/.
+
+Purpose: turn supplied meeting notes into a concise summary of decisions,
+action items with owners and deadlines when stated, and open questions.
+Use it when I ask to summarize meeting notes or extract meeting actions.
+Do not use it for scheduling meetings or summarizing unrelated documents.
+Do not invent missing owners, deadlines, or decisions.
+
+Use templates/skill/SKILL.md.template as a starting point, removing unused
+scaffolding. Create SKILL.md and evals/cases.md with trigger, near-miss,
+and behavior cases. Keep the instructions independent of any agent vendor
+or tool. Add the real skill to the README catalog and validate its format.
+```
+
+If skill-creator is unavailable, set it up in your authoring agent before creating or modifying skills here. The published skills themselves do not require skill-creator to run.
+
+### 3. Review the generated files
+
+The minimum repository layout for the example is:
+
+```text
+skills/writing/meeting-summary/
+  SKILL.md
+  evals/
+    cases.md
+```
+
+`SKILL.md` needs YAML frontmatter followed by the actual workflow instructions. A minimal frontmatter example is:
+
+```yaml
+---
+name: meeting-summary
+description: "Summarize supplied meeting notes into decisions, action items, and open questions. Use for meeting summaries and action extraction, not scheduling or unrelated document summaries."
+---
+```
+
+- Make `name` match the folder name, using lowercase letters, digits, and hyphens, with at most 64 characters.
+- Keep `description` non-empty and at most 1,024 characters. Explain both the capability and when to use it.
+- Write the workflow, expected output, and useful examples below the frontmatter. Remove all unfinished template text.
+- Add `scripts/`, `references/`, or `assets/` only when the workflow needs them, and link resources with paths relative to the skill folder.
+- Keep instructions agent-neutral. State any real environment or tool requirements instead of assuming they are available everywhere.
+
+### 4. Validate and test locally
+
+Ask skill-creator to run its format validator and review the folder/name match, references, and trigger description. From this repository's root, preview discovery and install only the new skill:
+
+```bash
+npx skills add . --list
+npx skills add . --skill meeting-summary
+```
+
+Choose a test project or isolated agent environment for testing. To install into a different project, run the following from that project's directory, using the absolute path to this repository:
+
+```bash
+npx skills add /absolute/path/to/this/repo --skill meeting-summary
+```
+
+Run the prompts in `evals/cases.md` in fresh agent sessions. Include requests that should activate the skill, similar requests that should not, and cases that check the output and handling of missing information. For this example, check that action owners and deadlines are not invented.
+
+Record the agent/version, date, observed result, and pass/fail. These are manual tests: successful format validation or installation does not prove behavior. Automatic trigger tests require the receiving agent's native skill support; explicit instruction loading can test the workflow itself.
+
+### 5. Add it to the catalog and publish
+
+Add a row to the Skills table above with the actual skill name, domain, purpose, and link to its `SKILL.md`. Then review and publish your changes. For the example, on `main`:
+
+```bash
+git diff --check
+git diff
+git status --short
+git add README.md skills/writing/meeting-summary/
+git diff --cached
+git commit -m "Add meeting-summary skill"
+git push origin main
+```
+
+Review the new files as well as the diff before committing. After the push, confirm discovery from GitHub and install the published skill:
+
+```bash
+npx skills add jack2000-dev/skills --list
+npx skills add jack2000-dev/skills --skill meeting-summary
+```
+
+The installer discovers new skill folders automatically; no package registration, custom npm release, or server is needed. Users select a newly added skill with `add`; `update` refreshes skills they already installed.
