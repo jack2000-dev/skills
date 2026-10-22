@@ -1,6 +1,6 @@
 ---
 name: data-analysis-frameworks
-description: Perform data analysis based on 6-phases framework: ask, prepare, process, analyze, share, and act.
+description: "Perform data analysis based on 6-phases framework: ask, prepare, process, analyze, share, and act."
 ---
 
 Use Case: Data Analysis Frameworks

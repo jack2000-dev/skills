@@ -1,6 +1,6 @@
 ---
 name: super-explainer
-description: Explain any topic, concept, technology, theory, or idea using a structured 5-part format that leads with WHY the user should care, names prerequisites and difficulty, gives a jargon-free introduction, ends with a practical real-world application, and finishes with origin, sources, and a glossary. Trigger this skill whenever the user asks to understand or explain something — phrases like "[X] explained," "what is [X]," "explain [X]," "tell me about [X]," "how does [X] work," "what's the deal with [X]," "[X] for beginners," "[X] in simple terms," "I don't understand [X]," or "help me understand [X]." Trigger even when the user is asking about something seemingly basic — the skill's value is the structured format, not just the content. Do NOT trigger for narrow factual lookups (e.g., "what's today's weather"), code-debugging questions, or step-by-step tutorials ("how do I install X").
+description: Explain any topic, concept, technology, theory, or idea using a structured 5-part format that leads with WHY the user should care, names prerequisites and difficulty, gives a jargon-free introduction, ends with a practical real-world application, and finishes with origin, sources, and a glossary. Trigger this skill whenever the user asks to understand or explain something — phrases like "[X] explained," "what is [X]," "explain [X]," "tell me about [X]," "how does [X] work," "what's the deal with [X]," "[X] for beginners," "[X] in simple terms," "I don't understand [X]," or "help me understand [X]." Trigger even when the user is asking about something seemingly basic — the skill's value is the structured format, not just the content. Do NOT trigger for narrow factual lookups (e.g., "what's today's weather"), code-debugging questions, step-by-step tutorials ("how do I install X"), or interactive tutoring requests ("teach me X one step at a time").
 ---
 
 # Super-Explainer
@@ -156,7 +156,7 @@ If the topic genuinely needs more, go longer — but justify the length by conte
 
 **Input:** "How do I install Node.js on macOS?"
 
-**Output:** Skill does NOT trigger. This is a step-by-step tutorial request, not a conceptual explanation. Claude handles it directly with normal tools.
+**Output:** Skill does NOT trigger. This is a step-by-step tutorial request, not a conceptual explanation. The agent handles it directly with its available tools.
 
 ---
 

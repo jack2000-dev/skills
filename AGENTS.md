@@ -1,10 +1,10 @@
-# SKILL-md-labs
+# skills
 
-This repo is a personal laboratory for authoring, testing, and storing Codex skills (SKILL.md files).
+This repo is a personal laboratory and installable collection for authoring, testing, and storing agent-neutral skills in the open Agent Skills format.
 
 ## Purpose
 
-- Draft and iterate on skills
+- Draft and iterate on portable skills
 - Store evals alongside each skill
 - Version-control skill development
 
@@ -17,8 +17,9 @@ skills/
       SKILL.md        # The skill itself
       evals/
         cases.md      # Trigger tests + behavior tests
-  _template/
-    SKILL.md          # Skeleton for new skills
+templates/
+  skill/
+    SKILL.md.template # Non-installable skeleton for new skills
 material/             # Reference PDFs and guides
 ```
 
@@ -27,10 +28,10 @@ material/             # Reference PDFs and guides
 | Folder | What goes here |
 |--------|---------------|
 | `data/` | Data analysis, SQL, statistics |
-| `dev/` | Coding, debugging, code review |
-| `writing/` | Docs, prompts, communication |
+| `finance/` | Personal finance, investing, life planning |
+| `learning/` | Explanations, interactive teaching |
 
-Add new domains as needed.
+Other domains, such as `dev/` and `writing/`, can be added when needed.
 
 ## REQUIRED: Use `/skill-creator` for All Skill Work
 
@@ -47,12 +48,13 @@ Reason: `/skill-creator` enforces consistent structure, eval coverage, and trigg
 ## Workflow
 
 1. Run `/skill-creator` — it will guide skill creation end-to-end
-2. Place output at `skills/<domain>/<name>/SKILL.md`
+2. Place output at `skills/<domain>/<name>/SKILL.md`; the folder name must match the frontmatter `name`
 3. Place evals at `skills/<domain>/<name>/evals/cases.md`
-4. Install locally: copy SKILL.md to `~/.Codex/skills/<name>/SKILL.md`
+4. Preview with `npx skills add . --list`, then install locally with `npx skills add .` and select the receiving agent
 5. Commit
 
 ## Notes
 
-- Skills in this repo are drafts. Installed skills live in `~/.Codex/`.
-- Evals are manual test cases, not automated. Run by pasting prompts into Codex.
+- Keep skill instructions agent-neutral; do not assume a vendor, tool name, or installation directory unless the workflow requires it.
+- Installed skill locations depend on the receiving agent and project/global scope. Manual installs must copy the complete skill folder.
+- Evals are manual test cases, not automated. Run by pasting prompts into fresh sessions of the receiving agent.

@@ -1,12 +1,12 @@
 ---
 name: hand-held-teacher
-description: Interactive, hand-held teaching mode that adapts to the learner. Start by assessing what the learner already knows, ask about their tech stack if the topic is technical, then teach in small chunks using hints and simple explanations, defining jargon and using analogies only when necessary, and end with a short quiz to check understanding. Trigger this skill whenever the user wants to learn or be taught a topic interactively — phrases like "teach me [X]", "I want to learn [X]", "walk me through [X]", "tutor me on [X]", "help me understand [X] step by step", "I'm new to [X], can you teach me", "guide me through learning [X]", "I want to study [X]", or any request that frames the user as a learner who wants to be coached over multiple turns rather than handed a finished explanation. Trigger even when the user does not explicitly say "teach" — if they describe themselves as a beginner or learner and want to be guided, use this skill. Do NOT trigger for one-shot explanation requests like "what is [X]" or "explain [X]" (use super-explainer), code-debugging requests, or "how do I install/configure [X]" tutorials.
+description: Teach a topic interactively through assessment, small lessons, hints, and a short quiz. Use when the user asks to be taught or coached over multiple turns, such as "teach me [X]", "I want to learn [X]", "tutor me on [X]", "walk me through [X]", or "help me understand [X] step by step". Also use when a beginner wants guided learning without explicitly saying "teach". Assess prior knowledge first, ask about the tech stack for technical topics, define new terms, and wait for responses between chunks. Exclude one-shot explanations ("what is [X]" or "explain [X]"), code debugging, and installation/configuration tutorials.
 license: MIT
 metadata:
   author: jack2000-dev
   version: 0.1.0
   category: learning
-  tags: [teaching, tutoring, learning, education, interactive]
+  tags: "teaching, tutoring, learning, education, interactive"
 ---
 
 # Hand-Held Teacher
@@ -15,7 +15,7 @@ Interactive tutoring mode. Adapt to the learner, teach in small chunks, end with
 
 ## Why This Skill Exists
 
-Most "explain X" responses dump the whole topic at once. That works for reference, not for learning. A learner needs assessment first (what do they already know?), small chunks (one idea at a time), supportive nudges instead of finished answers, and a check at the end to confirm understanding stuck. This skill switches Claude into a tutoring mode: ask before teaching, chunk before dumping, hint before solving, quiz before declaring done.
+Most "explain X" responses dump the whole topic at once. That works for reference, not for learning. A learner needs assessment first (what do they already know?), small chunks (one idea at a time), supportive nudges instead of finished answers, and a check at the end to confirm understanding stuck. This skill switches the agent into a tutoring mode: ask before teaching, chunk before dumping, hint before solving, quiz before declaring done.
 
 The skill is interactive by design. Expect multiple turns. Do not try to compress the whole lesson into one reply.
 
@@ -179,7 +179,7 @@ Quick check before I move on: what do you think a function returns the *moment* 
 
 ### Issue: Learner keeps asking you to skip ahead
 **Cause:** Either they actually know more than the assessment showed, or they want a reference doc rather than tutoring.
-**Solution:** Ask once: "Want me to skip to a specific chunk, or would you rather just have the whole thing as a reference?" If they want a reference, suggest the `super-explainer` skill is a better fit and bow out gracefully.
+**Solution:** Ask once: "Want me to skip to a specific chunk, or would you rather just have the whole thing as a reference?" If they want a reference, suggest the `super-explainer` skill if available; otherwise provide a standalone explanation directly.
 
 ### Issue: You catch yourself writing a long monolithic reply
 **Cause:** Reverting to default explanation mode.

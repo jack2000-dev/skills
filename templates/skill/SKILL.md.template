@@ -1,14 +1,14 @@
 ---
 name: skill-name-in-kebab-case
-description: [What this skill does in one phrase] — [when to use it, with specific trigger phrases the user would actually say]. Include file types if relevant. Trigger this skill whenever the user [paraphrased intent] — even if they don't explicitly say "[skill name]." Do NOT trigger for [unrelated cases that share keywords].
+description: "[What this skill does and when to use it. Include a boundary for likely near-misses.]"
 license: MIT
 # compatibility: Requires Python 3.10+, network access. (1–500 chars. Delete if no special env needs.)
-# allowed-tools: "Bash(python:*) Bash(npm:*) WebFetch"  # Restrict tool access if needed.
+# allowed-tools: "[Agent-specific tool names, only if required by the workflow.]"
 metadata:
   author: your-name
   version: 0.1.0
   # category: productivity
-  # tags: [tag-1, tag-2]
+  # tags: "tag-1, tag-2"
   # mcp-server: server-name        # if skill depends on a specific MCP server
   # documentation: https://example.com/docs
   # support: support@example.com
@@ -20,13 +20,13 @@ One-sentence pitch. What outcome does the user get?
 
 ## Why This Skill Exists
 
-Explain the problem this skill solves and what makes it valuable. Why should Claude use the structured workflow here instead of improvising? Today's models are smart — give them the *why* and they'll follow more reliably than they would with rigid rules.
+Explain the problem this skill solves and what makes it valuable. Why should the agent use the structured workflow here instead of improvising? Today's models are smart — give them the *why* and they'll follow more reliably than they would with rigid rules.
 
 Keep this short (3–6 sentences).
 
 ## When to Use
 
-This is reinforcement of the description for Claude's benefit when the body loads. Be concrete.
+This is reinforcement of the description for the agent's benefit when the body loads. Be concrete.
 
 **Use when:**
 - User says: "[trigger phrase 1]"
@@ -101,9 +101,9 @@ If output is non-text (file, chart, structured data), describe shape:
 **Input:** "[sample user prompt]"
 
 **Actions:**
-1. [What Claude does first]
-2. [What Claude does second]
-3. [What Claude does third]
+1. [What the agent does first]
+2. [What the agent does second]
+3. [What the agent does third]
 
 **Output:** [expected result, abbreviated]
 
@@ -112,7 +112,7 @@ If output is non-text (file, chart, structured data), describe shape:
 **Input:** "[trickier user prompt]"
 
 **Actions:**
-1. [How Claude handles it]
+1. [How the agent handles it]
 
 **Output:** [expected result]
 
@@ -134,21 +134,23 @@ If output is non-text (file, chart, structured data), describe shape:
 - `references/<name>.md` — [what's in it, when to read it] (load only when needed)
 - `assets/<name>` — [template/icon/font used in output]
 
-For large reference files (>300 lines), include a table of contents in the reference itself so Claude can jump to the right section.
+For large reference files (>300 lines), include a table of contents in the reference itself so the agent can jump to the right section.
 
 ---
 
 ## Authoring Notes (delete before publishing)
 
-This template follows the Anthropic Agent Skills standard. Quick checklist before publishing:
+This template follows the open Agent Skills standard. Rename it to `SKILL.md` inside the new skill folder through `/skill-creator`. Remove unused scaffolding before publishing.
+
+Quick checklist before publishing:
 
 **Frontmatter:**
-- [ ] `name` is kebab-case, matches folder name, no "claude"/"anthropic" prefix (reserved)
+- [ ] `name` is kebab-case, matches folder name, and is at most 64 characters
 - [ ] `description` includes WHAT the skill does AND WHEN to use it
 - [ ] `description` includes specific trigger phrases the user would type
 - [ ] `description` is under 1024 characters
 - [ ] No XML angle brackets (`<` `>`) anywhere in frontmatter (security restriction)
-- [ ] Description is slightly "pushy" — explicitly says "trigger even when user doesn't say X" to fight undertriggering
+- [ ] Description clearly identifies the intended requests without attracting unrelated tasks
 - [ ] Has `---` delimiters at top and bottom
 - [ ] No unclosed quotes in description
 
@@ -160,7 +162,7 @@ This template follows the Anthropic Agent Skills standard. Quick checklist befor
 - [ ] Troubleshooting covers ≥2 common failure modes
 - [ ] Heavy reference material moved to `references/` with explicit pointers about *when* to read each
 - [ ] For deterministic validations, bundle a script in `scripts/` rather than relying on language
-- [ ] Total SKILL.md under ~500 lines (5,000 words hard ceiling per Anthropic guide)
+- [ ] SKILL.md is concise; substantial optional details live in referenced files
 
 **Folder:**
 - [ ] Folder name matches `name` field exactly (kebab-case)
@@ -172,12 +174,11 @@ This template follows the Anthropic Agent Skills standard. Quick checklist befor
 - [ ] Test 5 obvious-trigger prompts — should fire
 - [ ] Test 5 paraphrased prompts — should fire
 - [ ] Test 5 near-miss prompts (share keywords, different intent) — should NOT fire
-- [ ] Ask Claude in fresh session: "When would you use the [skill name] skill?" — answer should match the description's intent
+- [ ] Ask the receiving agent in a fresh session: "When would you use the [skill name] skill?" — answer should match the description's intent
 
-If undertriggering: add specific phrases and "trigger even if..." language to description.
+If undertriggering: clarify the intended requests and add representative phrases to the description.
 If overtriggering: add explicit "Do NOT use when..." negatives to description.
 
 **Reference material:**
-- `material/the-complete-guide-to-building-skill-for-claude.md` — Anthropic's official guide (in this repo)
 - `/skill-creator` — interactive skill builder; use for design + iteration
-- Anthropic Agent Skills standard — open-source spec; skills portable across platforms
+- [Agent Skills specification](https://agentskills.io/specification) — portable skill format and constraints
