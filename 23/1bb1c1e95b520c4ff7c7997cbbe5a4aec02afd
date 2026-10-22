@@ -1,0 +1,19 @@
+README.md
+  s_42e48f22e3f09c::t_66f89bb22b3dba 74,76-168
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "231bb1c1e95b520c4ff7c7997cbbe5a4aec02afd",
+  "prompts": {},
+  "sessions": {
+    "s_42e48f22e3f09c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a16406-7a28-7b80-9235-e3771e83a30e",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "jack2000-dev <jackwforwork@gmail.com>"
+    }
+  }
+}
