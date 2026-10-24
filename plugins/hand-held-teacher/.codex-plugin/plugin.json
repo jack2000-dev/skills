@@ -1,0 +1,16 @@
+{
+  "name": "hand-held-teacher",
+  "version": "0.1.0",
+  "description": "Learn interactively through assessment, short lessons, hints, and a quiz.",
+  "author": {
+    "name": "jack2000-dev",
+    "url": "https://github.com/jack2000-dev"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Hand Held Teacher",
+    "shortDescription": "Learn step by step with hints and a quiz",
+    "developerName": "jack2000-dev",
+    "category": "Productivity"
+  }
+}

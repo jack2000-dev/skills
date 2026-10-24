@@ -1,0 +1,16 @@
+{
+  "name": "super-explainer",
+  "version": "0.1.0",
+  "description": "Explain a topic with motivation, prerequisites, applications, and sources.",
+  "author": {
+    "name": "jack2000-dev",
+    "url": "https://github.com/jack2000-dev"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Super Explainer",
+    "shortDescription": "Understand a topic through a structured explanation",
+    "developerName": "jack2000-dev",
+    "category": "Productivity"
+  }
+}

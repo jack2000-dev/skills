@@ -1,0 +1,16 @@
+{
+  "name": "data-analysis-frameworks",
+  "version": "0.1.0",
+  "description": "Analyze data through ask, prepare, process, analyze, share, and act.",
+  "author": {
+    "name": "jack2000-dev",
+    "url": "https://github.com/jack2000-dev"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Data Analysis Frameworks",
+    "shortDescription": "Analyze data with a six-phase workflow",
+    "developerName": "jack2000-dev",
+    "category": "Productivity"
+  }
+}

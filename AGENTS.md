@@ -17,6 +17,16 @@ skills/
       SKILL.md        # The skill itself
       evals/
         cases.md      # Trigger tests + behavior tests
+plugins/
+  <skill-name>/
+    .codex-plugin/
+      plugin.json     # Independent plugin identity and presentation
+    skills/
+      <skill-name>/   # Generated runtime copy; edit canonical skills/ instead
+scripts/
+  sync_plugins.py     # Generate plugin skill copies or check for drift
+.agents/plugins/
+  marketplace.json    # Catalog of independently installable plugins
 templates/
   skill/
     SKILL.md.template # Non-installable skeleton for new skills
@@ -51,7 +61,8 @@ Reason: `/skill-creator` enforces consistent structure, eval coverage, and trigg
 2. Place output at `skills/<domain>/<name>/SKILL.md`; the folder name must match the frontmatter `name`
 3. Place evals at `skills/<domain>/<name>/evals/cases.md`
 4. Preview with `npx skills add . --list`, then install locally with `npx skills add .` and select the receiving agent
-5. Commit
+5. For marketplace support, add the plugin manifest and catalog entry as described in README.md; run `python3 scripts/sync_plugins.py` and `python3 scripts/sync_plugins.py --check`
+6. Commit canonical source, plugin packages, and catalog changes together
 
 ## Notes
 

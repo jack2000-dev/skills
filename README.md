@@ -4,6 +4,8 @@ Agent-neutral workflows by jack2000-dev, written in the open [Agent Skills forma
 
 ## Install
 
+### Install skills with the CLI
+
 With [Node.js 22.20 or later](https://nodejs.org/), run:
 
 ```bash
@@ -22,6 +24,34 @@ npx skills add jack2000-dev/skills --skill super-explainer
 # Install across projects for your chosen agents
 npx skills add jack2000-dev/skills -g
 ```
+
+### Install separate plugins in Codex
+
+This repository also provides the **Jack2000 Skills** plugin marketplace. Each skill is a separate plugin with its own installation and enabled state.
+
+1. Open Codex's plugin browser and select **Add plugin marketplace**.
+2. Set **Source** to `jack2000-dev/skills`.
+3. Set **Git ref** to `main`.
+4. Leave **Sparse paths** empty.
+5. Add the marketplace, then install the individual plugins you want.
+
+Open an installed plugin to enable, disable, or uninstall it independently. In Codex CLI, enter `/plugins` and press `Space` on an installed plugin to turn it on or off. Start a new session after changing plugins to check the available skills.
+
+You can also register the marketplace from a terminal:
+
+```bash
+codex plugin marketplace add jack2000-dev/skills --ref main
+codex plugin list --marketplace jack2000-skills --available
+codex plugin add super-explainer@jack2000-skills
+```
+
+Choose either direct skill installation or plugin installation for a given skill in the same agent. A separate copy installed with `npx skills add` can remain available after you disable the matching plugin. Remove that direct copy with `npx skills remove <skill-name>`, adding `-g` if it was installed globally.
+
+### Resolve a missing marketplace manifest
+
+If Codex reports that the marketplace root does not contain a supported manifest, confirm that the selected Git ref contains [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json). Commit and push local changes before importing from GitHub. Leave **Sparse paths** empty so the catalog and all referenced skill folders are included.
+
+For an unpublished working copy, use the absolute path to this repository as **Source** instead of the GitHub shorthand. See the [OpenAI plugin packaging guide](https://developers.openai.com/plugins/build/plugins) for the marketplace format.
 
 ## Skills
 
@@ -67,6 +97,14 @@ npx skills remove super-explainer -g
 
 Updates are user-triggered. Changes published to GitHub do not automatically change installed skills. To browse and select newly added skills, run the `add` command again. See the [CLI reference](https://github.com/vercel-labs/skills/blob/main/docs/commands.md) for agent selection, private repositories, and other options.
 
+For Codex plugins, use the plugin browser to manage each plugin separately. Refresh the Git marketplace after publication with:
+
+```bash
+codex plugin marketplace upgrade jack2000-skills
+```
+
+The `npx skills` commands manage direct skill installations. They do not control the Codex plugin's enabled state.
+
 ## Develop a skill
 
 Use `/skill-creator` for all skill creation, edits, and evaluation work, as required by [the contributor instructions](AGENTS.md).
@@ -94,7 +132,10 @@ Do not invent missing owners, deadlines, or decisions.
 Use templates/skill/SKILL.md.template as a starting point, removing unused
 scaffolding. Create SKILL.md and evals/cases.md with trigger, near-miss,
 and behavior cases. Keep the instructions independent of any agent vendor
-or tool. Add the real skill to the README catalog and validate its format.
+or tool. Add plugins/meeting-summary/.codex-plugin/plugin.json with skills
+set to "./skills/" and version "0.1.0". Register the plugin in
+.agents/plugins/marketplace.json. Run python3 scripts/sync_plugins.py to
+package the skill. Add it to the README catalog and validate both formats.
 ```
 
 If skill-creator is unavailable, set it up in your authoring agent before creating or modifying skills here. The published skills themselves do not require skill-creator to run.
@@ -108,6 +149,17 @@ skills/writing/meeting-summary/
   SKILL.md
   evals/
     cases.md
+```
+
+Its separate plugin package contains:
+
+```text
+plugins/meeting-summary/
+  .codex-plugin/
+    plugin.json
+  skills/
+    meeting-summary/
+      SKILL.md        # Generated from the canonical skill above
 ```
 
 `SKILL.md` needs YAML frontmatter followed by the actual workflow instructions. A minimal frontmatter example is:
@@ -146,13 +198,47 @@ Record the agent/version, date, observed result, and pass/fail. These are manual
 
 ### 5. Add it to the catalog and publish
 
-Add a row to the Skills table above with the actual skill name, domain, purpose, and link to its `SKILL.md`. Then review and publish your changes. For the example, on `main`:
+Add a row to the Skills table above with the actual skill name, domain, purpose, and link to its `SKILL.md`.
+
+For independent plugin controls, ask skill-creator to add `plugins/<skill-name>/.codex-plugin/plugin.json`. Match the plugin `name` to the skill name, start its `version` at `0.1.0`, and set `skills` to `"./skills/"`. Include the author and a readable display name, following an existing plugin manifest in this repo. Increment the plugin version when publishing changes to that plugin.
+
+Add a corresponding entry to the `plugins` array in `.agents/plugins/marketplace.json`. For the example:
+
+```json
+{
+  "name": "meeting-summary",
+  "source": {
+    "source": "local",
+    "path": "./plugins/meeting-summary"
+  },
+  "policy": {
+    "installation": "AVAILABLE",
+    "authentication": "ON_INSTALL"
+  },
+  "category": "Productivity"
+}
+```
+
+Paths resolve from the repository root. Each entry points to a separate plugin package, so its plugin can be installed or disabled independently. Keep the marketplace name `jack2000-skills` unchanged when adding entries.
+
+Generate the packaged skills and check that they match the source:
+
+```bash
+python3 scripts/sync_plugins.py
+python3 scripts/sync_plugins.py --check
+```
+
+This authoring step requires Python 3.9 or later and uses only the standard library. Plugin users install the committed packages without running the sync script.
+
+Edit instructions and runtime resources in `skills/<domain>/<skill-name>/`, then run these commands after each change. The sync script copies those files into `plugins/<skill-name>/skills/<skill-name>/`; evals stay beside the canonical source. Use regular files for packaged resources. Do not edit generated copies directly. Commit them so GitHub marketplace installs include the complete package.
+
+Review and publish the skill, plugin manifest, marketplace entry, and README together. For the example, on `main`:
 
 ```bash
 git diff --check
 git diff
 git status --short
-git add README.md skills/writing/meeting-summary/
+git add README.md .agents/plugins/marketplace.json skills/writing/meeting-summary/ plugins/meeting-summary/
 git diff --cached
 git commit -m "Add meeting-summary skill"
 git push origin main
@@ -165,4 +251,4 @@ npx skills add jack2000-dev/skills --list
 npx skills add jack2000-dev/skills --skill meeting-summary
 ```
 
-The installer discovers new skill folders automatically; no package registration, custom npm release, or server is needed. Users select a newly added skill with `add`; `update` refreshes skills they already installed.
+The skills CLI discovers new skill folders automatically. Codex's plugin marketplace also needs the explicit manifest, catalog entry, and synced package described above. No custom npm release or server is needed. Users select a newly added skill with `add`; `update` refreshes skills they already installed through the skills CLI.

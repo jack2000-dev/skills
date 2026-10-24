@@ -1,0 +1,16 @@
+{
+  "name": "invest-mud",
+  "version": "0.1.0",
+  "description": "Build a personal finance and life plan through an interview and analysis.",
+  "author": {
+    "name": "jack2000-dev",
+    "url": "https://github.com/jack2000-dev"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Invest Mud",
+    "shortDescription": "Plan personal finances and life goals",
+    "developerName": "jack2000-dev",
+    "category": "Productivity"
+  }
+}

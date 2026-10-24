@@ -1,0 +1,56 @@
+{
+  "name": "jack2000-skills",
+  "interface": {
+    "displayName": "Jack2000 Skills"
+  },
+  "plugins": [
+    {
+      "name": "data-analysis-frameworks",
+      "source": {
+        "source": "local",
+        "path": "./plugins/data-analysis-frameworks"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "invest-mud",
+      "source": {
+        "source": "local",
+        "path": "./plugins/invest-mud"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "super-explainer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/super-explainer"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "hand-held-teacher",
+      "source": {
+        "source": "local",
+        "path": "./plugins/hand-held-teacher"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
